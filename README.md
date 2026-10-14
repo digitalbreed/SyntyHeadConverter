@@ -70,7 +70,17 @@ Click a screenshot to view it at full resolution.
 
 ## Installation
 
-In Unity Package Manager, choose **Install package from disk** and select this package's `package.json`, or install its `.tgz` archive. The UPM identifier is `digitalbreed.syntyheadconverter`; the C# namespace and product name are `digitalbreed.SyntyHeadConverter`.
+**From Git:** In Unity Package Manager, choose **+ → Install package from git URL**, enter the following URL, then click **Install**:
+
+```text
+https://github.com/digitalbreed/SyntyHeadConverter.git
+```
+
+Git must be installed and available on your system's `PATH`. The package is at the repository root, so no `?path=` suffix is needed. To pin a specific revision, append `#` followed by a tag or commit hash. See [Unity's Git installation instructions](https://docs.unity3d.com/6000.0/Documentation/Manual/upm-ui-giturl.html).
+
+**From disk or archive:** Choose **Install package from disk** and select this package's `package.json`, or install its `.tgz` archive.
+
+The UPM identifier is `digitalbreed.syntyheadconverter`; the C# namespace and product name are `digitalbreed.SyntyHeadConverter`.
 
 Requirements:
 
