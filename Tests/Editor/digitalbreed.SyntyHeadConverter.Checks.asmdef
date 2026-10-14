@@ -1,0 +1,7 @@
+{
+  "name": "digitalbreed.SyntyHeadConverter.Checks",
+  "rootNamespace": "digitalbreed.SyntyHeadConverter.Tests",
+  "references": ["digitalbreed.SyntyHeadConverter.Editor"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false
+}

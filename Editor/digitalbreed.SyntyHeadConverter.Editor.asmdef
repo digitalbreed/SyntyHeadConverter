@@ -1,0 +1,6 @@
+{
+  "name": "digitalbreed.SyntyHeadConverter.Editor",
+  "rootNamespace": "digitalbreed.SyntyHeadConverter",
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}
