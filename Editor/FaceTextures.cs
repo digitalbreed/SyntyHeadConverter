@@ -247,7 +247,10 @@ namespace digitalbreed.SyntyHeadConverter {
             var covered = new bool[pixels.Length];
             int material = materials.Count;
             materials.Add(new HeadAssetBuilder.Mat { name = recipe.characterId + " jaw skin", color = new[] { 1f, 1f, 1f, 1f }, texture = "JawWrap.png" });
-            foreach (var face in mesh.faces.Where(face2 => face2.skin && face2.Center.y > 1.42f)) {
+            foreach (var face in mesh.faces.Where(face2 => face2.skin && face2.Center.y > 1.42f &&
+                (face2.material == skinMaterial || face2.material == detailMaterial ||
+                 materials[face2.material].skinShading && face2.vertices.Skip(1).All(v =>
+                     (v.uv - face2.vertices[0].uv).sqrMagnitude < 1e-10f)))) {
                 bool detail = face.material == detailMaterial;
                 var vertices = face.vertices.Select(vertex => vertex.Clone()).ToArray();
                 var angles = vertices.Select(vertex2 => Mathf.Atan2(-vertex2.position.x, .012f + vertex2.position.z)).ToArray();

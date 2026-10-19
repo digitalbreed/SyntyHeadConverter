@@ -49,7 +49,7 @@ namespace digitalbreed.SyntyHeadConverter {
         public float throatLowerFrontLimit = .11f;
         /// <summary>Enables textured stubble over the lower face, jaw and upper neck.</summary>
         public bool scruff;
-        /// <summary>Insets the neck bridge beneath a shirt collar and blends its skin material; disable for exposed necks.</summary>
+        /// <summary>Insets the neck bridge beneath a shirt collar; disable for exposed necks. Skin shading is always matched to the head.</summary>
         public bool collarInset = true;
         /// <summary>Connected-component vertex counts used to recognize retained source accessories.</summary>
         public int[] accessories = Array.Empty<int>();

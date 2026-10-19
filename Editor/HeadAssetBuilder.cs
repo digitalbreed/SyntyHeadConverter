@@ -22,7 +22,11 @@ namespace digitalbreed.SyntyHeadConverter {
             where T : Object {
             var old = AssetDatabase.LoadAssetAtPath<T>(path);
             if (old) {
-                EditorUtility.CopySerialized(item, old);
+                if (item is Mesh sourceMesh && old is Mesh savedMesh) {
+                    HeadMeshAssets.CopySerialized(sourceMesh, savedMesh);
+                } else {
+                    EditorUtility.CopySerialized(item, old);
+                }
                 Object.DestroyImmediate(item);
                 EditorUtility.SetDirty(old);
                 return old;

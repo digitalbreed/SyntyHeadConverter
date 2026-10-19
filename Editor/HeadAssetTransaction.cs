@@ -125,7 +125,11 @@ namespace digitalbreed.SyntyHeadConverter {
 
             foreach (var snapshot in objects) {
                 if (snapshot.original) {
-                    EditorUtility.CopySerialized(snapshot.copy, snapshot.original);
+                    if (snapshot.copy is Mesh meshCopy && snapshot.original is Mesh originalMesh) {
+                        HeadMeshAssets.CopySerialized(meshCopy, originalMesh);
+                    } else {
+                        EditorUtility.CopySerialized(snapshot.copy, snapshot.original);
+                    }
                     snapshot.original.hideFlags = snapshot.hideFlags;
                     EditorUtility.SetDirty(snapshot.original);
                 }

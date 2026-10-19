@@ -65,6 +65,7 @@ namespace digitalbreed.SyntyHeadConverter {
         public class Mat {
             public string name, texture, sourceMaterial;
             public float[] color;
+            public bool skinShading;
         }
 
         [Serializable]
@@ -285,7 +286,7 @@ namespace digitalbreed.SyntyHeadConverter {
             var saved = AssetDatabase.LoadAssetAtPath<Mesh>(asset);
             if (create) {
                 if (saved) {
-                    EditorUtility.CopySerialized(mesh, saved);
+                    HeadMeshAssets.CopySerialized(mesh, saved);
                     Object.DestroyImmediate(mesh);
                     EditorUtility.SetDirty(saved);
                 } else {
@@ -315,6 +316,14 @@ namespace digitalbreed.SyntyHeadConverter {
             string path = modelFolder + "/" + materialData.name.Replace(' ', '_') + ".mat";
             var original = string.IsNullOrEmpty(materialData.sourceMaterial) ? null : AssetDatabase.LoadAssetAtPath<Material>(materialData.sourceMaterial);
             if (original) {
+                if (materialData.skinShading) {
+                    var rgb = Recipe.settings.skin;
+                    var tint = new Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255).linear;
+                    var skin = Material(new Mat { name = Recipe.characterId + " skin", color = new[] { tint.r, tint.g, tint.b, 1f } });
+                    var sample = Recipe.settings.skinSampleUv;
+                    var uv = sample != null && sample.Length == 2 ? new Vector2(sample[0], sample[1]) : new Vector2(.018f, .19f);
+                    return Save(HeadSkinMaterial.Create(skin, original, materialData.name, HeadSkinMaterial.SampleAtlas(original, uv)), path);
+                }
                 return Save(new Material(original), path);
             }
 

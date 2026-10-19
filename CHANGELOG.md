@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-10-19
+
+- Give retained lower-neck skin the head's shading independently of collar fitting, preserving source atlases, UVs and tattoos while leaving clothing and hair materials unchanged. Keep retained artwork out of scruff texture replacement.
+- Add explicit tattoo-island material selection and native mesh/material repair helpers, with checks for albedo, garment, skinning and facial-expression preservation.
+- Rebuild live index buffers after replacing native meshes and separating submeshes, including rollback. Fix stale draw ranges that rendered neck, face and eyebrow triangles with incorrect materials; add GPU index-buffer checks.
+- Clarify that the collar-inset control changes geometry independently of skin shading, and document retained tattoo-island selection.
 
 - Support explicit Sidekick folders in separate staging projects and package-aware installed-asset discovery. Resolve one complete installation and exclude converter caches.
 - Prepare metadata before individually importing new donor copies; reuse immutable content/profile-keyed copies without reconfiguring or reimporting originals or existing cache entries.

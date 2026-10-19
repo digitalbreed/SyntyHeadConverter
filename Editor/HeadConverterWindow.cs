@@ -330,7 +330,7 @@ namespace digitalbreed.SyntyHeadConverter {
             settings.cut = EditorGUILayout.Slider("Neck cut height", settings.cut, 1.30f, 1.56f);
             settings.neckScale[0] = EditorGUILayout.Slider("Neck width", settings.neckScale[0], .65f, 1.15f);
             settings.neckScale[1] = EditorGUILayout.Slider("Neck depth", settings.neckScale[1], .65f, 1.15f);
-            settings.collarInset = EditorGUILayout.Toggle("Blend collar skin shading", settings.collarInset);
+            settings.collarInset = EditorGUILayout.Toggle("Inset neck beneath collar", settings.collarInset);
             settings.throatSoftening = EditorGUILayout.Slider("Soften throat", settings.throatSoftening, 0, 1);
             var shells = new[] { "", "embedded" }.Concat(captured.accessories.Select(meshPart => meshPart.name)).ToArray();
             var shellLabels = new[] { "Off", "Integrated hair / headwear" }.Concat(captured.accessories.Select(meshPart2 => meshPart2.name)).ToArray();

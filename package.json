@@ -1,6 +1,6 @@
 {
   "name": "digitalbreed.syntyheadconverter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "digitalbreed.SyntyHeadConverter",
   "description": "Unity editor tools for fitting expressive Sidekick heads to Synty POLYGON characters.",
   "unity": "6000.0",

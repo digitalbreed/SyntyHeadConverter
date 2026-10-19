@@ -61,10 +61,32 @@ namespace digitalbreed.SyntyHeadConverter {
                 }
             }
 
+            // Material routing is independent of collar geometry. Keep the source atlas and
+            // UVs (including tattoos), but shade retained neck skin using the head's shader.
+            var neckMaterials = new Dictionary<int, int>();
+            var neckUvRegions = options.Rows("neckSkinUvRegions");
+            if (neckUvRegions.Any(r => r.Length != 4 || r.Any(float.IsNaN) || r.Any(float.IsInfinity) || r[0] > r[1] || r[2] > r[3])) {
+                throw new FormatException("neckSkinUvRegions must contain [uMin, uMax, vMin, vMax] rectangles.");
+            }
             foreach (var face in body.faces) {
-                if ((fit.collarInset || options.Flag("neckSkinMaterial")) && face.skin && face.Center.y > 1.30f && Mathf.Abs(face.Center.x) < .25f && face.material < skinMaterial) {
-                    face.material = skinMaterial;
+                bool authoredSkin = neckUvRegions.Any(r => face.vertices.All(v =>
+                    v.uv.x >= r[0] && v.uv.x <= r[1] && v.uv.y >= r[2] && v.uv.y <= r[3]));
+                bool retainedNeck = face.skin && face.Center.y <= fit.cut + .00001f;
+                if (!(retainedNeck || authoredSkin) || face.Center.y <= 1.30f || Mathf.Abs(face.Center.x) >= .25f || face.material >= skinMaterial) {
+                    continue;
                 }
+                if (!neckMaterials.TryGetValue(face.material, out int neckMaterial)) {
+                    var sourceMaterial = materials[face.material];
+                    neckMaterial = materials.Count;
+                    materials.Add(new HeadAssetBuilder.Mat {
+                        name = recipe.characterId + " neck skin " + face.material,
+                        sourceMaterial = sourceMaterial.sourceMaterial,
+                        color = sourceMaterial.color,
+                        skinShading = true
+                    });
+                    neckMaterials.Add(face.material, neckMaterial);
+                }
+                face.material = neckMaterial;
             }
 
             int iterations = (int)options.Number("neckRelaxIterations");
