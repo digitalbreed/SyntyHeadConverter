@@ -7,6 +7,8 @@
 - Rebuild live index buffers after replacing native meshes and separating submeshes, including rollback. Fix stale draw ranges that rendered neck, face and eyebrow triangles with incorrect materials; add GPU index-buffer checks.
 - Clarify that the collar-inset control changes geometry independently of skin shading, and document retained tattoo-island selection.
 
+## 0.1.0
+
 - Support explicit Sidekick folders in separate staging projects and package-aware installed-asset discovery. Resolve one complete installation and exclude converter caches.
 - Prepare metadata before individually importing new donor copies; reuse immutable content/profile-keyed copies without reconfiguring or reimporting originals or existing cache entries.
 - Save generated textures as native assets with stable GUIDs, retaining composed PNGs in local job folders. Remove project-wide refreshes and texture reimports from build and rollback.
@@ -14,8 +16,6 @@
 - Use Newtonsoft for all converter JSON, preserving field layouts and reading legacy editor-session instance IDs. Store persistent recipe asset references by GUID and local file ID.
 - Add JSON round-trip, partial-update, array-replacement and recipe-reference checks.
 - Declare the required Unity Animation, IMGUI and Image Conversion modules; remove the converter's use of Unity's JSON Serialization module.
-
-## 0.1.0
 
 - Exclude flared shirt collars from necklace underlay generation; add close neck inspection renders above, below and during a head turn.
 
