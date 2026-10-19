@@ -5,6 +5,7 @@
 - Give retained lower-neck skin the head's shading independently of collar fitting, preserving source atlases, UVs and tattoos while leaving clothing and hair materials unchanged. Keep retained artwork out of scruff texture replacement.
 - Add explicit tattoo-island material selection and native mesh/material repair helpers, with checks for albedo, garment, skinning and facial-expression preservation.
 - Rebuild live index buffers after replacing native meshes and separating submeshes, including rollback. Fix stale draw ranges that rendered neck, face and eyebrow triangles with incorrect materials; add GPU index-buffer checks.
+- Include connected skin triangles crossing the lower neck fitting boundary instead of testing only their centers, preventing isolated patches from retaining clothing shading. Add coverage for smaller necks, split vertices, clothing boundaries and disconnected skin.
 - Clarify that the collar-inset control changes geometry independently of skin shading, and document retained tattoo-island selection.
 
 ## 0.1.0

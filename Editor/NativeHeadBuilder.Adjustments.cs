@@ -68,13 +68,24 @@ namespace digitalbreed.SyntyHeadConverter {
             if (neckUvRegions.Any(r => r.Length != 4 || r.Any(float.IsNaN) || r.Any(float.IsInfinity) || r[0] > r[1] || r[2] > r[3])) {
                 throw new FormatException("neckSkinUvRegions must contain [uMin, uMax, vMin, vMax] rectangles.");
             }
-            foreach (var face in body.faces) {
+            var neckCandidates = new List<int>();
+            var neckSeeds = new List<int>();
+            for (int i = 0; i < body.faces.Count; i++) {
+                var face = body.faces[i];
                 bool authoredSkin = neckUvRegions.Any(r => face.vertices.All(v =>
                     v.uv.x >= r[0] && v.uv.x <= r[1] && v.uv.y >= r[2] && v.uv.y <= r[3]));
                 bool retainedNeck = face.skin && face.Center.y <= fit.cut + .00001f;
-                if (!(retainedNeck || authoredSkin) || face.Center.y <= 1.30f || Mathf.Abs(face.Center.x) >= .25f || face.material >= skinMaterial) {
+                if (!(retainedNeck || authoredSkin) || face.material >= skinMaterial ||
+                    face.vertices.Max(v => v.position.y) <= 1.30f || Mathf.Abs(face.Center.x) >= .25f) {
                     continue;
                 }
+                neckCandidates.Add(i);
+                if (face.Center.y > 1.30f && Mathf.Abs(face.Center.x) < .25f) neckSeeds.Add(i);
+            }
+            var neckPositions = body.faces.SelectMany(f => f.vertices.Select(v => v.position)).ToArray();
+            foreach (int i in HeadSkinSubmeshes.ConnectedTriangles(neckPositions,
+                Enumerable.Range(0, neckPositions.Length).ToArray(), neckCandidates, neckSeeds)) {
+                var face = body.faces[i];
                 if (!neckMaterials.TryGetValue(face.material, out int neckMaterial)) {
                     var sourceMaterial = materials[face.material];
                     neckMaterial = materials.Count;

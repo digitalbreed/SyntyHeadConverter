@@ -15,6 +15,16 @@ namespace digitalbreed.SyntyHeadConverter.Tests {
             Material neck = null;
             Material retinted = null;
             try {
+                // A smaller character's bottom neck triangle has its centroid below the old
+                // cutoff. Follow the skin surface across split UV/normal vertices, stopping
+                // at clothes and ignoring disconnected skin such as hands.
+                var points = new[] { new Vector3(0, 1.323f, 0), new Vector3(-.048f, 1.294f, 0),
+                    new Vector3(0, 1.273f, 0), new Vector3(.048f, 1.294f, 0), new Vector3(0, 1.35f, 0),
+                    new Vector3(0, 1.323f, 0), new Vector3(-.048f, 1.294f, 0),
+                    new Vector3(.5f, 1.2f, 0), new Vector3(.6f, 1.2f, 0), new Vector3(.5f, 1.3f, 0) };
+                var faces = new[] { 5, 4, 6, 0, 1, 2, 0, 2, 3, 1, 3, 2, 7, 8, 9 };
+                var connected = HeadSkinSubmeshes.ConnectedTriangles(points, faces, new[] { 0, 1, 2, 4 }, new[] { 0 });
+                Check(connected.SequenceEqual(new[] { 0, 1, 2 }), "Lower neck omitted or clothes/disconnected skin included");
                 palette.mainTexture = atlas;
                 palette.mainTextureScale = new Vector2(.75f, .5f);
                 palette.mainTextureOffset = new Vector2(.1f, .2f);
@@ -59,7 +69,7 @@ namespace digitalbreed.SyntyHeadConverter.Tests {
                 try { HeadSkinSubmeshes.Separate(mesh, 0, new[] { 0, 0 }); throw new Exception("Duplicate selection accepted"); }
                 catch (ArgumentException) { }
                 Check(mesh.subMeshCount == 3 && mesh.GetTriangles(0).Length == 3, "Invalid selection mutated mesh");
-                return "PASS: head shading, complexion, atlas sampling, garment preservation, triangle routing, mesh attributes, expressions, invalid selections and GPU index buffers after live mesh replacement.";
+                return "PASS: connected lower neck selection across split vertices, clothing/disconnected-skin barriers, head shading, complexion, atlas sampling, garment preservation, triangle routing, mesh attributes, expressions, invalid selections and GPU index buffers after live mesh replacement.";
             } finally {
                 if (neck) Object.DestroyImmediate(neck);
                 if (retinted) Object.DestroyImmediate(retinted);
